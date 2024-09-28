@@ -274,7 +274,7 @@ func (p King) GetValidMoves() []Move {
 
     if row - 1 >= 0 && col - 1 >= 0 {
         moves = append(moves, Move{Row: row - 1, Col: col - 1})
-
+ 
     }
 
     if row + 1 < 8 && col + 1 < 8 {
@@ -285,8 +285,8 @@ func (p King) GetValidMoves() []Move {
         moves = append(moves, Move{Row: row - 1, Col: col + 1})
     }
 
-    if row + 1 < 8 && col - 1 < 8 {
-        moves = append(moves, Move{Row: row + 1, Col: col + 1})
+    if row + 1 < 8 && col - 1 >= 0 {
+        moves = append(moves, Move{Row: row + 1, Col: col - 1})
     }
 
 
@@ -296,10 +296,11 @@ func (p King) GetValidMoves() []Move {
 
 type Pawn struct {
     Common RootPiece
+    white bool
 }
 
-func MakePawn(cell Cell) King {
-    return King{Common: RootPiece{Cell: cell}}
+func MakePawn(cell Cell, white bool) Pawn {
+    return Pawn{Common: RootPiece{Cell: cell}, white: white}
 }
 
 func (p Pawn) GetCommon() *RootPiece {
@@ -313,10 +314,21 @@ func (p Pawn) GetValidMoves() []Move {
     row := p.Common.Cell.Row
     col := p.Common.Cell.Col
 
-    if row - 1 >= 0 {
-        moves = append(moves, Move{Row: row - 1, Col: col})
+    if p.white {
+        if row - 1 >= 0 {
+            moves = append(moves, Move{Row: row - 1, Col: col})
+
+        }
+
+    } else {
+
+        if row + 1 < 8 {
+            moves = append(moves, Move{Row: row +  1, Col: col})
+
+        }
 
     }
+
 
     return moves
 }
