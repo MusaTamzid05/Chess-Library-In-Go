@@ -16,7 +16,7 @@ type Cell struct {
 var EMPTYCELL string = "."
 
 func (cell  Cell) Render() {
-    fmt.Print( cell.Symbol, "\t")
+    fmt.Print(cell.Symbol, "\t")
 }
 
 func MakeCell(name, symbol string, row, col int) Cell {

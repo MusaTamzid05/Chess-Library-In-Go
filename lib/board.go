@@ -25,7 +25,18 @@ type Board struct {
 }
 
 func (b Board) Render() {
+
+    fmt.Print("   ")
     for i := 0; i < 8; i += 1 {
+        fmt.Printf("%c\t", CHARS[i])
+    }
+
+    fmt.Println()
+
+
+    for i := 0; i < 8; i += 1 {
+        rowStr := strconv.Itoa(8 - i)
+        fmt.Print(rowStr, "  ")
         for j := 0; j < 8; j += 1 {
             b.Cells[i][j].Render()
         }
@@ -33,6 +44,12 @@ func (b Board) Render() {
     }
 
 
+    fmt.Print("   ")
+    for i := 0; i < 8; i += 1 {
+        fmt.Printf("%c\t", CHARS[i])
+    }
+
+    fmt.Println()
 
 }
 
