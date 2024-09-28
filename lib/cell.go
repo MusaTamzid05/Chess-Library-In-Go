@@ -19,6 +19,15 @@ func (cell  Cell) Render() {
     fmt.Print(cell.Symbol, " ")
 }
 
+func (cell  Cell) InfoString() string  {
+    return fmt.Sprintf("[%d][%d] %s %s", 
+    cell.Row,
+    cell.Col,
+    cell.Name,
+    cell.Symbol,
+   )
+}
+
 func MakeCell(name, symbol string, row, col int) Cell {
 
     if symbol == " " {
