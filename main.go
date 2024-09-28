@@ -16,17 +16,12 @@ func main() {
     board := lib.MakeBoard()
     board.Render()
 
-    blackPieces := lib.InitBlackPlayers(board)
+    whitePieces := lib.InitWhitePieces(board)
+    bishop := whitePieces["f1"]
 
-    for cellName, piece := range blackPieces {
-        moves := piece.GetValidMoves()
-        fmt.Print(cellName,"\n")
-        for _, move := range moves {
-            fmt.Print(move.GetString(),"  ")
-        }
-
-        fmt.Println("\n")
-
+    for cellName, move := range bishop.GetValidMoves() {
+        fmt.Println(cellName, move.GetString())
     }
+
 
 }

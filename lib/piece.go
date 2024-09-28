@@ -150,6 +150,7 @@ func (p Bishop) GetValidMoves() []Move {
         newRow += 1
         newCol += 1
 
+
         if newRow < 8 && newCol < 8 {
             moves = append(moves, Move{Row: newRow, Col: newCol})
         } else {
@@ -187,6 +188,9 @@ func (p Bishop) GetValidMoves() []Move {
             break
         }
     }
+
+    newRow = row
+    newCol = col
 
     // down , right
     for true {
