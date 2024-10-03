@@ -17,12 +17,14 @@ func (g* Game) Run() {
         g.board.Render()
 
 
-        validMove := false
+        validMoveFound := false
         fromCellName := ""
         toCellName := ""
+        playerColors := [] string {"white", "black"}
+        currentPlayerIndex := 0
 
-        for validMove == false {
-            fmt.Printf(">>> ")
+        for validMoveFound == false {
+            fmt.Printf("%s >>> ", playerColors[currentPlayerIndex])
             fmt.Scan(&userInput)
 
             if userInput == "exit" {
@@ -36,24 +38,42 @@ func (g* Game) Run() {
             fmt.Println(fromCellName, toCellName)
 
 
-            // convert the move into board cell map
+            if g.players[currentPlayerIndex].GetCommon().PieceExists(fromCellName) == false {
+                fmt.Println("Invalid Piece for the player ", fromCellName)
+                continue
+            }
 
-            newMove, err := MakeMove(toCellName)
-            oldMove , _ := MakeMove(fromCellName)
+            toMove, err := MakeMove(toCellName)
 
             if err != nil {
                 fmt.Println(err)
                 continue
             }
 
+            validMoves := g.players[currentPlayerIndex].GetCommon().GetValidMovesFor(fromCellName)
 
-            fmt.Println(oldMove.Row, oldMove.Col)
-            fmt.Println(newMove.Row, newMove.Col)
+            for _, validMove := range validMoves {
+                if validMove.Equal(toMove) {
+                    validMoveFound = true
+                    break
+                }
+
+            }
+
+            if validMoveFound == false {
+                fmt.Println(toCellName, " is not a valid move")
+            }
+
         }
+
+        fmt.Println("valid move found")
 
         if running == false {
             continue
         }
+
+        nextPlayerIndex := (currentPlayerIndex + 1) % 2
+        currentPlayerIndex = nextPlayerIndex
 
 
 

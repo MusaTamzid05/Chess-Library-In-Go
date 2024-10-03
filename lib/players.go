@@ -46,7 +46,15 @@ func InitWhitePieces(board Board) map[string]Piece {
 
 type RootPlayer struct {
     Pieces map[string]Piece
+}
 
+func (p RootPlayer) PieceExists(cellName string ) bool {
+    _, ok := p.Pieces[cellName]
+    return ok
+}
+
+func (p RootPlayer) GetValidMovesFor(cellName string ) [] Move {
+    return p.Pieces[cellName].GetValidMoves()
 }
 
 type Player interface {

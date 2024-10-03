@@ -36,6 +36,11 @@ func (m Move) GetString() string {
 }
 
 
+func (m Move) Equal(other Move) bool{
+    return m.Row == other.Row && m.Col == other.Col
+}
+
+
 func MakeMove(cellName string) (Move, error){
     row, col, err := ConvertCellNameToRowCol(cellName)
     return Move{Row: row, Col: col}, err
