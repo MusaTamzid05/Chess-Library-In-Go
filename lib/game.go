@@ -11,17 +11,20 @@ type Game struct {
 
 func (g* Game) Run() {
     running := true
+
+
     var userInput string
+    currentPlayerIndex := 0
+    fromCellName := ""
+    toCellName := ""
+    playerColors := [] string {"white", "black"}
+
 
     for running {
         g.board.Render()
 
 
         validMoveFound := false
-        fromCellName := ""
-        toCellName := ""
-        playerColors := [] string {"white", "black"}
-        currentPlayerIndex := 0
 
         for validMoveFound == false {
             fmt.Printf("%s >>> ", playerColors[currentPlayerIndex])
@@ -61,18 +64,41 @@ func (g* Game) Run() {
             }
 
             if validMoveFound == false {
-                fmt.Println(toCellName, " is not a valid move")
+                fmt.Println("invalid move")
             }
 
         }
 
-        fmt.Println("valid move found")
 
         if running == false {
             continue
         }
 
+
+        newCell, pieceRemoved, err := g.board.UpdateBoard(
+            fromCellName,
+            toCellName)
+
+
+        if err != nil {
+            fmt.Println(err)
+            continue
+        }
+
+
+        g.players[currentPlayerIndex].GetCommon().UpdateCell(
+            fromCellName,
+            toCellName,
+            newCell)
+
+
         nextPlayerIndex := (currentPlayerIndex + 1) % 2
+
+        if pieceRemoved {
+            g.players[nextPlayerIndex].GetCommon().Remove(
+                toCellName)
+        }
+
         currentPlayerIndex = nextPlayerIndex
 
 

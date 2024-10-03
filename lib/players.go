@@ -57,6 +57,19 @@ func (p RootPlayer) GetValidMovesFor(cellName string ) [] Move {
     return p.Pieces[cellName].GetValidMoves()
 }
 
+
+func (p* RootPlayer) UpdateCell(fromCellName, toCellName string, newCell Cell)  {
+    piece := p.Pieces[fromCellName]
+    delete(p.Pieces, fromCellName)
+    piece.GetCommon().Cell = newCell
+    p.Pieces[toCellName] = piece
+}
+
+
+func (p* RootPlayer) Remove(cellName string)  {
+    delete(p.Pieces, cellName)
+}
+
 type Player interface {
     GetCommon() *RootPlayer
 }

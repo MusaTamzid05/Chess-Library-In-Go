@@ -28,6 +28,15 @@ func (cell  Cell) InfoString() string  {
    )
 }
 
+func (c* Cell) Reset() {
+    c.Symbol = EMPTYCELL
+}
+
+
+func (c Cell) IsEmpty() bool {
+    return c.Symbol == EMPTYCELL
+}
+
 func MakeCell(name, symbol string, row, col int) Cell {
 
     if symbol == " " {

@@ -63,6 +63,32 @@ func (b Board) ShowInfo() {
 
 }
 
+func (b* Board) UpdateBoard(fromCellName, toCellName string) (Cell, bool, error) {
+    fromRow, fromCol, err := ConvertCellNameToRowCol(fromCellName)
+
+    if err != nil {
+        return Cell{}, false, err
+    }
+
+    symbol := b.Cells[fromRow][fromCol].Symbol
+    b.Cells[fromRow][fromCol].Reset()
+
+    toRow, toCol, err := ConvertCellNameToRowCol(toCellName)
+
+    if err != nil {
+        return Cell{}, false, err
+    }
+
+    pieceRemoved := b.Cells[toRow][toCol].IsEmpty() == false
+    b.Cells[toRow][toCol].Symbol = symbol
+
+    return b.Cells[toRow][toCol], pieceRemoved, nil
+
+
+
+
+}
+
 
 
 func MakeBoard() Board {
