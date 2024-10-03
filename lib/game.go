@@ -2,6 +2,8 @@ package lib
 
 import (
     "fmt"
+    "os"
+    "os/exec"
 )
 
 type Game struct {
@@ -100,11 +102,18 @@ func (g* Game) Run() {
         }
 
         currentPlayerIndex = nextPlayerIndex
-
+        g.ClearScreen()
 
 
 
     }
+
+}
+
+func (g Game) ClearScreen() {
+    c := exec.Command("clear")
+    c.Stdout = os.Stdout
+    c.Run()
 
 }
 
