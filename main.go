@@ -2,7 +2,7 @@ package main
 
 import (
     "chess_recording/lib"
-    "fmt"
+    //"fmt"
 )
 
 
@@ -13,6 +13,7 @@ func test() {
 }
 
 func main() {
+    /*
     board := lib.MakeBoard()
     board.Render()
 
@@ -22,6 +23,10 @@ func main() {
     for cellName, move := range bishop.GetValidMoves() {
         fmt.Println(cellName, move.GetString())
     }
+    */
+
+    game := lib.MakeGame()
+    game.Run()
 
 
 }

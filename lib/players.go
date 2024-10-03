@@ -1,5 +1,6 @@
 package lib
 
+
 func InitBlackPieces(board Board) map[string]Piece {
     pieces := map[string]Piece{}
 
@@ -41,3 +42,42 @@ func InitWhitePieces(board Board) map[string]Piece {
     return pieces
 
 }
+
+
+type RootPlayer struct {
+    Pieces map[string]Piece
+
+}
+
+type Player interface {
+    GetCommon() *RootPlayer
+}
+
+type WhitePlayer struct {
+    Common RootPlayer
+}
+
+func (p WhitePlayer) GetCommon() *RootPlayer {
+    return &p.Common
+}
+
+func MakeWhitePlayer(board Board) WhitePlayer {
+    pieces := InitWhitePieces(board)
+    return WhitePlayer{Common: RootPlayer{Pieces: pieces}}
+}
+
+
+type BlackPlayer struct {
+    Common RootPlayer
+}
+
+func (p BlackPlayer) GetCommon() *RootPlayer {
+    return &p.Common
+}
+
+
+func MakeBlackPlayer(board Board) BlackPlayer {
+    pieces := InitBlackPieces(board)
+    return BlackPlayer{Common: RootPlayer{Pieces: pieces}}
+}
+
