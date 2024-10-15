@@ -11,15 +11,15 @@ type Piece interface {
 }
 
 type Rook struct {
-    Common RootPiece
+    Common *RootPiece
 }
 
 func MakeRook(cell Cell) Rook {
-    return Rook{Common: RootPiece{Cell: cell}}
+    return Rook{Common: &RootPiece{Cell: cell}}
 }
 
 func (p Rook) GetCommon() *RootPiece {
-    return &p.Common
+    return p.Common
 }
 
 
@@ -65,15 +65,15 @@ func (p Rook) GetValidMoves() []Move {
 
 
 type Knight struct {
-    Common RootPiece
+    Common *RootPiece
 }
 
 func MakeKnight(cell Cell) Knight {
-    return Knight{Common: RootPiece{Cell: cell}}
+    return Knight{Common: &RootPiece{Cell: cell}}
 }
 
 func (p Knight) GetCommon() *RootPiece {
-    return &p.Common
+    return p.Common
 }
 
 
@@ -124,15 +124,15 @@ func (p Knight) GetValidMoves() []Move {
 
 
 type Bishop struct {
-    Common RootPiece
+    Common *RootPiece
 }
 
 func MakeBishop(cell Cell) Bishop {
-    return Bishop{Common: RootPiece{Cell: cell}}
+    return Bishop{Common: &RootPiece{Cell: cell}}
 }
 
 func (p Bishop) GetCommon() *RootPiece {
-    return &p.Common
+    return p.Common
 }
 
 
@@ -210,15 +210,15 @@ func (p Bishop) GetValidMoves() []Move {
 
 
 type Queen struct {
-    Common RootPiece
+    Common *RootPiece
 }
 
 func MakeQueen(cell Cell) Queen {
-    return Queen{Common: RootPiece{Cell: cell}}
+    return Queen{Common: &RootPiece{Cell: cell}}
 }
 
 func (p Queen) GetCommon() *RootPiece {
-    return &p.Common
+    return p.Common
 }
 
 
@@ -238,15 +238,15 @@ func (p Queen) GetValidMoves() []Move {
 
 
 type King struct {
-    Common RootPiece
+    Common *RootPiece
 }
 
 func MakeKing(cell Cell) King {
-    return King{Common: RootPiece{Cell: cell}}
+    return King{Common: &RootPiece{Cell: cell}}
 }
 
 func (p King) GetCommon() *RootPiece {
-    return &p.Common
+    return p.Common
 }
 
 
@@ -299,16 +299,16 @@ func (p King) GetValidMoves() []Move {
 
 
 type Pawn struct {
-    Common RootPiece
+    Common *RootPiece
     white bool
 }
 
 func MakePawn(cell Cell, white bool) Pawn {
-    return Pawn{Common: RootPiece{Cell: cell}, white: white}
+    return Pawn{Common: &RootPiece{Cell: cell}, white: white}
 }
 
 func (p Pawn) GetCommon() *RootPiece {
-    return &p.Common
+    return p.Common
 }
 
 

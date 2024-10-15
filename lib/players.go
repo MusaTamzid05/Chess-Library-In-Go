@@ -14,7 +14,7 @@ func InitBlackPieces(board Board) map[string]Piece {
     pieces["h8"] = MakeRook(board.Cells[0][7])
 
     for i := 0; i < 8; i += 1 {
-        pieces[string(CHARS[i]) + "7"] = MakePawn(board.Cells[1][7], false)
+        pieces[string(CHARS[i]) + "7"] = MakePawn(board.Cells[1][i], false)
     }
 
     return pieces
