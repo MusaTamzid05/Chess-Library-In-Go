@@ -23,6 +23,7 @@ func (g* Game) Run() {
 
 
     for running {
+        g.ClearScreen()
         g.board.Render()
 
 
@@ -55,7 +56,8 @@ func (g* Game) Run() {
                 continue
             }
 
-            validMoves := g.players[currentPlayerIndex].GetCommon().GetValidMovesFor(fromCellName)
+            validMoves := g.players[currentPlayerIndex].GetCommon().GetValidMovesFor(fromCellName,
+                                                            g.board)
 
             for _, validMove := range validMoves {
                 if validMove.Equal(toMove) {
@@ -102,7 +104,6 @@ func (g* Game) Run() {
         }
 
         currentPlayerIndex = nextPlayerIndex
-        g.ClearScreen()
 
 
 

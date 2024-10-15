@@ -7,7 +7,7 @@ type RootPiece struct {
 
 type Piece interface {
     GetCommon() *RootPiece
-    GetValidMoves() []Move
+    GetValidMoves(board Board) []Move
 }
 
 type Rook struct {
@@ -23,7 +23,7 @@ func (p Rook) GetCommon() *RootPiece {
 }
 
 
-func (p Rook) GetValidMoves() []Move {
+func (p Rook) GetValidMoves(board Board) []Move {
     moves := []Move{}
 
     row := p.Common.Cell.Row
@@ -34,12 +34,22 @@ func (p Rook) GetValidMoves() []Move {
 
     for i := col + 1; i < 8; i += 1 {
         newCol = i 
+
+        if board.Cells[newRow][newCol].IsEmpty() == false {
+            break
+        }
+
         moves = append(moves, Move{Row: newRow, Col: newCol})
     }
 
 
     for i := col - 1; i >= 0; i -= 1 {
         newCol = i 
+
+        if board.Cells[newRow][newCol].IsEmpty() == false {
+            break
+        }
+
         moves = append(moves, Move{Row: newRow, Col: newCol})
     }
 
@@ -50,12 +60,22 @@ func (p Rook) GetValidMoves() []Move {
 
     for i := row + 1; i < 8; i += 1 {
         newRow = i 
+
+        if board.Cells[newRow][newCol].IsEmpty() == false {
+            break
+        }
+
         moves = append(moves, Move{Row: newRow, Col: newCol})
     }
 
 
     for i := row - 1; i >= 0; i -= 1 {
         newRow = i 
+
+        if board.Cells[newRow][newCol].IsEmpty() == false {
+            break
+        }
+
         moves = append(moves, Move{Row: newRow, Col: newCol})
     }
 
@@ -77,7 +97,7 @@ func (p Knight) GetCommon() *RootPiece {
 }
 
 
-func (p Knight) GetValidMoves() []Move {
+func (p Knight) GetValidMoves(board Board) []Move {
     moves := []Move{}
 
     row := p.Common.Cell.Row
@@ -88,7 +108,9 @@ func (p Knight) GetValidMoves() []Move {
 
 
     if newRow < 8 && newCol < 8 {
-        moves = append(moves, Move{Row: newRow, Col: newCol})
+        if board.Cells[newRow][newCol].IsEmpty() {
+            moves = append(moves, Move{Row: newRow, Col: newCol})
+        }
     }
 
 
@@ -97,7 +119,9 @@ func (p Knight) GetValidMoves() []Move {
 
 
     if newRow < 8 && newCol >= 0 {
-        moves = append(moves, Move{Row: newRow, Col: newCol})
+        if board.Cells[newRow][newCol].IsEmpty() {
+            moves = append(moves, Move{Row: newRow, Col: newCol})
+        }
     }
 
 
@@ -106,7 +130,9 @@ func (p Knight) GetValidMoves() []Move {
 
 
     if newRow >= 0 && newCol >= 0 {
-        moves = append(moves, Move{Row: newRow, Col: newCol})
+        if board.Cells[newRow][newCol].IsEmpty() {
+            moves = append(moves, Move{Row: newRow, Col: newCol})
+        }
     }
 
 
@@ -116,7 +142,9 @@ func (p Knight) GetValidMoves() []Move {
 
 
     if newRow >= 0 && newCol < 8 {
-        moves = append(moves, Move{Row: newRow, Col: newCol})
+        if board.Cells[newRow][newCol].IsEmpty() {
+            moves = append(moves, Move{Row: newRow, Col: newCol})
+        }
     }
 
     return moves
@@ -136,7 +164,7 @@ func (p Bishop) GetCommon() *RootPiece {
 }
 
 
-func (p Bishop) GetValidMoves() []Move {
+func (p Bishop) GetValidMoves(board Board) []Move {
     moves := []Move{}
 
     row := p.Common.Cell.Row
@@ -150,8 +178,11 @@ func (p Bishop) GetValidMoves() []Move {
         newRow += 1
         newCol += 1
 
-
         if newRow < 8 && newCol < 8 {
+            if board.Cells[newRow][newCol].IsEmpty() == false {
+                break
+            }
+
             moves = append(moves, Move{Row: newRow, Col: newCol})
         } else {
             break
@@ -168,6 +199,9 @@ func (p Bishop) GetValidMoves() []Move {
         newCol -= 1
 
         if newRow >= 0  && newCol >= 0  {
+            if board.Cells[newRow][newCol].IsEmpty() == false {
+                break
+            }
             moves = append(moves, Move{Row: newRow, Col: newCol})
         } else {
             break
@@ -183,6 +217,9 @@ func (p Bishop) GetValidMoves() []Move {
         newCol -= 1
 
         if newRow < 8  && newCol >= 0  {
+            if board.Cells[newRow][newCol].IsEmpty() == false {
+                break
+            }
             moves = append(moves, Move{Row: newRow, Col: newCol})
         } else {
             break
@@ -198,6 +235,9 @@ func (p Bishop) GetValidMoves() []Move {
         newCol += 1
 
         if newRow >= 0  && newCol < 8  {
+            if board.Cells[newRow][newCol].IsEmpty() == false {
+                break
+            }
             moves = append(moves, Move{Row: newRow, Col: newCol})
         } else {
             break
@@ -222,14 +262,14 @@ func (p Queen) GetCommon() *RootPiece {
 }
 
 
-func (p Queen) GetValidMoves() []Move {
+func (p Queen) GetValidMoves(board Board) []Move {
     moves := []Move{}
 
     rook := MakeRook(p.Common.Cell)
-    moves = append(moves, rook.GetValidMoves()...)
+    moves = append(moves, rook.GetValidMoves(board)...)
 
     bishop := MakeBishop(p.Common.Cell)
-    moves = append(moves, bishop.GetValidMoves()...)
+    moves = append(moves, bishop.GetValidMoves(board)...)
 
     return moves
 }
@@ -250,47 +290,63 @@ func (p King) GetCommon() *RootPiece {
 }
 
 
-func (p King) GetValidMoves() []Move {
+func (p King) GetValidMoves(board Board) []Move {
     moves := []Move{}
 
     row := p.Common.Cell.Row
     col := p.Common.Cell.Col
 
     if row - 1 >= 0 {
-        moves = append(moves, Move{Row: row - 1, Col: col})
+        if board.Cells[row - 1][col].IsEmpty() {
+            moves = append(moves, Move{Row: row - 1, Col: col})
+        }
+
 
     }
 
     if row + 1 < 8 {
-        moves = append(moves, Move{Row: row + 1, Col: col})
+        if board.Cells[row + 1][col].IsEmpty() {
+            moves = append(moves, Move{Row: row + 1, Col: col})
+        }
     }
 
 
     if col - 1 >= 0 {
-        moves = append(moves, Move{Row: row, Col: col - 1})
+        if board.Cells[row][col - 1].IsEmpty() {
+            moves = append(moves, Move{Row: row, Col: col - 1})
+        }
 
     }
 
     if col + 1 < 8 {
-        moves = append(moves, Move{Row: row, Col: col + 1})
+        if board.Cells[row][col + 1].IsEmpty() {
+            moves = append(moves, Move{Row: row, Col: col + 1})
+        }
     }
 
 
     if row - 1 >= 0 && col - 1 >= 0 {
-        moves = append(moves, Move{Row: row - 1, Col: col - 1})
- 
+        if board.Cells[row - 1][col - 1].IsEmpty() {
+            moves = append(moves, Move{Row: row - 1, Col: col - 1})
+        }
     }
 
     if row + 1 < 8 && col + 1 < 8 {
-        moves = append(moves, Move{Row: row + 1, Col: col + 1})
+        if board.Cells[row + 1][col + 1].IsEmpty() {
+            moves = append(moves, Move{Row: row + 1, Col: col + 1})
+        }
     }
 
     if row - 1 >= 0 && col + 1 < 8 {
-        moves = append(moves, Move{Row: row - 1, Col: col + 1})
+        if board.Cells[row - 1][col + 1].IsEmpty() {
+            moves = append(moves, Move{Row: row - 1, Col: col + 1})
+        }
     }
 
     if row + 1 < 8 && col - 1 >= 0 {
-        moves = append(moves, Move{Row: row + 1, Col: col - 1})
+        if board.Cells[row + 1][col - 1].IsEmpty() {
+            moves = append(moves, Move{Row: row + 1, Col: col - 1})
+        }
     }
 
 
@@ -312,7 +368,7 @@ func (p Pawn) GetCommon() *RootPiece {
 }
 
 
-func (p Pawn) GetValidMoves() []Move {
+func (p Pawn) GetValidMoves(board Board) []Move {
     moves := []Move{}
 
     row := p.Common.Cell.Row
@@ -320,14 +376,18 @@ func (p Pawn) GetValidMoves() []Move {
 
     if p.white {
         if row - 1 >= 0 {
-            moves = append(moves, Move{Row: row - 1, Col: col})
+            if board.Cells[row - 1][col].IsEmpty() {
+                moves = append(moves, Move{Row: row - 1, Col: col})
+            }
 
         }
 
     } else {
 
         if row + 1 < 8 {
-            moves = append(moves, Move{Row: row +  1, Col: col})
+            if board.Cells[row + 1][col].IsEmpty() {
+                moves = append(moves, Move{Row: row + 1, Col: col})
+            }
 
         }
 

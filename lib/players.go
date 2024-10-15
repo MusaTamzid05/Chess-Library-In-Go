@@ -53,8 +53,8 @@ func (p RootPlayer) PieceExists(cellName string ) bool {
     return ok
 }
 
-func (p RootPlayer) GetValidMovesFor(cellName string ) [] Move {
-    return p.Pieces[cellName].GetValidMoves()
+func (p RootPlayer) GetValidMovesFor(cellName string, board Board) [] Move {
+    return p.Pieces[cellName].GetValidMoves(board)
 }
 
 
