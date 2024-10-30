@@ -49,3 +49,34 @@ func (s ServerGame) GetValidMoveNames(cellName string) []string {
     return validMovePosNames
 
 }
+
+func (s *ServerGame) Update(fromCellName, toCellName string) error {
+    currentPlayerIndex := s.CurrentPlayerIndex
+
+    newCell, pieceRemoved, err := s.board.UpdateBoard(
+        fromCellName,
+        toCellName)
+
+
+    if err != nil {
+        return err
+    }
+
+
+    s.players[currentPlayerIndex].GetCommon().UpdateCell(
+        fromCellName,
+        toCellName,
+        newCell)
+
+
+    nextPlayerIndex := (currentPlayerIndex + 1) % 2
+
+    if pieceRemoved {
+        s.players[nextPlayerIndex].GetCommon().Remove(
+            toCellName)
+    }
+
+    s.CurrentPlayerIndex = nextPlayerIndex
+
+    return nil
+}

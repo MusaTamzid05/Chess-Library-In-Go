@@ -17,6 +17,11 @@ def show_valid_moves(from_):
 
 
 
+def update(from_, to):
+    res = requests.post("http://localhost:8080/update", json={"from" : from_, "to" : to})
+    print(res.json())
+
+
 if __name__ == "__main__":
     running = True
 
@@ -29,6 +34,9 @@ if __name__ == "__main__":
 
         elif choice == "valid":
             show_valid_moves(from_= prompt[1])
+
+        elif choice == "update":
+            update(from_= prompt[1], to=prompt[2])
 
 
         if choice == "exit":
