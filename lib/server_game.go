@@ -32,3 +32,20 @@ func (s ServerGame) GetBoardMap() [8][8] string {
 
 }
 
+
+func (s ServerGame) GetValidMoveNames(cellName string) []string {
+
+    if s.players[s.CurrentPlayerIndex].GetCommon().PieceExists(cellName) == false {
+        return []string {}
+    }
+
+    validMoves := s.players[s.CurrentPlayerIndex].GetCommon().GetValidMovesFor(cellName, s.board)
+    validMovePosNames := []string{}
+
+    for _, validMove := range validMoves {
+        validMovePosNames = append(validMovePosNames, validMove.GetString())
+    }
+
+    return validMovePosNames
+
+}

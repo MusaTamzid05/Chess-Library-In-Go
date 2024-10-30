@@ -13,7 +13,21 @@ func Server() {
     r.GET("/board", func(c *gin.Context) {
         boardMap := serverGame.GetBoardMap()
         c.JSON(http.StatusOK, boardMap)
+    })
 
+
+    r.POST("/valid_moves", func(c *gin.Context) {
+        var parameter struct {
+            Cell string `json:"cell"`
+        }
+
+        if err := c.ShouldBindBodyWithJSON(&parameter); err != nil {
+            c.JSON(http.StatusBadRequest, gin.H{"error" : err.Error()})
+            return
+        }
+
+        validMovePosNames := serverGame.GetValidMoveNames(parameter.Cell)
+        c.JSON(http.StatusOK, validMovePosNames)
     })
 
     r.Run(":8080")
