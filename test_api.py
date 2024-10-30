@@ -4,8 +4,11 @@ def draw_board():
     res = requests.get("http://localhost:8080/board")
     board = res.json()
 
-    for row in board:
-        print(row)
+    for index, row in enumerate(board):
+        print(8 - index, row)
+
+    print("", end="  ")
+    print("a b c d e f g h".split())
 
 
 if __name__ == "__main__":
