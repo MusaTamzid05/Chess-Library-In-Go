@@ -25,8 +25,10 @@ func main() {
     }
     */
 
-    game := lib.MakeGame()
-    game.Run()
+    //game := lib.MakeGame()
+    //game.Run()
+
+    Server()
 
 
 }
